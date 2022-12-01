@@ -12,12 +12,6 @@ namespace TwitterBot
 {
     class Program
     {
-        private static string apiKey = "taGDpHQ8LCRcv68Xsfz9YrbXl";
-        private static string apiKeySecret = "0Pb4NPSJvy0wdFX6gxjEPc4GS2kM2uvQCgfzERnk4iW6okqf8d";
-        //private static string bearerToken = "AAAAAAAAAAAAAAAAAAAAAHp%2BjwEAAAAAmfwmYZ2AYF4SURx5wxbeX8WF1G0%3DzzGEtUTDp8YEUS2jSiYgNP8XbKKvVfMAzxp1ttAIM8LElJNmUj";
-        private static string accessToken = "1597629600246505472-QRvONKsEMIbIoMbPbaR3gQMiF4RSdy";
-        private static string accessTokenSecret = "35bkwniCzpGcpSfwPMH81e9Z51tOV4wuby11AUm4FxKkg";
-
         static List<TmData>? tmDataSet = new List<TmData>()
         {
             new TmData() 
@@ -45,7 +39,7 @@ namespace TwitterBot
 
         static async Task Main(string[] args)
         {
-            var userClient = new TwitterClient(Config.apiKey, apiKeySecret, accessToken, accessTokenSecret);
+            var userClient = new TwitterClient(Config.apiKey, Config.apiKeySecret, Config.accessToken, Config.accessTokenSecret);
             var user = await userClient.Users.GetAuthenticatedUserAsync();
             while (true)
             {
