@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
@@ -12,6 +12,16 @@ namespace TwitterBot
 {
     class Program
     {
+        //static string apiKeySecret = System.Environment.GetEnvironmentVariable("apiKeySecret");
+        //static string apiKey = System.Environment.GetEnvironmentVariable("apiKey");
+        //static string accessToken = System.Environment.GetEnvironmentVariable("accessToken");
+        //static string accessTokenSecret = System.Environment.GetEnvironmentVariable("accessTokenSecret");
+
+        static List<string> Leagues = new List<string>()
+        {
+            "de1", "gb1", "fr1", "it1", "es1"
+        };
+
         static List<TmData>? tmDataSet = new List<TmData>()
         {
             new TmData() 
@@ -34,7 +44,7 @@ namespace TwitterBot
             }
         };
         static Queue<string> Messages { get; set; } = new Queue<string>();
-        static string[] blackList { get; set; } = new string[] { "Darío Osorio" };
+        static string[] blackList { get; set; } = new string[] { "Lionel Messi", "Haris Seferovic", "Mertcan Ayhan", "Fabiano Parisi", "Darío Osorio", "Cristiano Ronaldo", "Deniz Undav", "Bruno Fernandes", "Nathanaël Mbuku", "Panagiotis Retsos", "Billy Gilmour" };
 
 
         static async Task Main(string[] args)
@@ -43,19 +53,26 @@ namespace TwitterBot
             var user = await userClient.Users.GetAuthenticatedUserAsync();
             while (true)
             {
-                CheckForNewData();
-                if (Messages.Count > 0)
+                foreach (string league in Leagues)
                 {
-                    var tweet = await userClient.Tweets.PublishTweetAsync(Messages.Dequeue());
+
+                    CheckForNewData(league);
+                    if (Messages.Count > 0)
+                    {
+                        var tweet = await userClient.Tweets.PublishTweetAsync(Messages.Dequeue());
+                        Console.WriteLine("Tweet sent!");
+                        //Thread.Sleep(15000);
+                    }
                 }
+                Thread.Sleep(120000);
             }
 
 
         }
 
-        static async void GetTmData()
+        static async void GetTmData(string league)
         {
-            HttpResponse<string> response = Unirest.get("https://football-rumour-mill.p.rapidapi.com/uk/sources")
+            HttpResponse<string> response = Unirest.get($"https://football-rumour-mill.p.rapidapi.com/sources/{league}")
                 .header("X-RapidAPI-Host", "football-rumour-mill.p.rapidapi.com")
                 .header("X-RapidAPI-Key", Config.rapidKey)
                 .header("Accept", "application/json")
@@ -63,24 +80,28 @@ namespace TwitterBot
             tmDataSet = JsonSerializer.Deserialize<List<TmData>>(response.Body);            
         }
 
-        static async void CheckForNewData()
+        static async void CheckForNewData(string league)
         {
-            while (true)
+            GetTmData(league);
+            List<TmData> newFirstThree = new List<TmData> { tmDataSet[0], tmDataSet[1], tmDataSet[2] };
+            foreach (TmData item in newFirstThree)
             {
-                List<TmData> firstThree = new List<TmData> { tmDataSet[0], tmDataSet[1], tmDataSet[2] };
-                GetTmData();
-                List<TmData> newFirstThree = new List<TmData> { tmDataSet[0], tmDataSet[1], tmDataSet[2] };
-                foreach (TmData item in newFirstThree)
+                if (!blackList.Contains(item.playerName))
                 {
-                    Console.WriteLine(item.playerName);
-                    if (!firstThree.Any(x => x.playerName == item.playerName))
-                    {
-                        MessageGenerator(item);
-                        return;
-                    }
+                    item.currentClub = item.currentClub.Replace(" ", "");
+                    item.currentClub = item.currentClub.Replace(".", "");
+                    item.interestedClub = item.interestedClub.Replace(" ", "");
+                    item.interestedClub = item.interestedClub.Replace(".", "");
+                    Console.WriteLine(item.playerName, league);
+                    MessageGenerator(item);
+                    return;
                 }
-                Thread.Sleep(120000);
+                else
+                {
+                    Console.WriteLine($"{DateTime.Now} running ... {item.playerName}, {league}");
+                }
             }
+            Thread.Sleep(15000);
         }
 
         static void MessageGenerator(TmData tmData)
