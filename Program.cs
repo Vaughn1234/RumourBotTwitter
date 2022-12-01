@@ -44,7 +44,10 @@ namespace TwitterBot
             while (true)
             {
                 CheckForNewData();
-                var tweet = await userClient.Tweets.PublishTweetAsync(Messages.Dequeue());
+                if (Messages.Count > 0)
+                {
+                    var tweet = await userClient.Tweets.PublishTweetAsync(Messages.Dequeue());
+                }
             }
 
 
@@ -54,7 +57,7 @@ namespace TwitterBot
         {
             HttpResponse<string> response = Unirest.get("https://football-rumour-mill.p.rapidapi.com/uk/sources")
                 .header("X-RapidAPI-Host", "football-rumour-mill.p.rapidapi.com")
-                .header("X-RapidAPI-Key", "13bf9ffa8fmsh239bce8a85bc36bp1b3b7bjsne4f7820a660a")
+                .header("X-RapidAPI-Key", Config.rapidKey)
                 .header("Accept", "application/json")
                 .asJson<string>();
             tmDataSet = JsonSerializer.Deserialize<List<TmData>>(response.Body);            
