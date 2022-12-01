@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
@@ -12,6 +12,11 @@ namespace TwitterBot
 {
     class Program
     {
+      static string apiKeySecret = System.Environment.GetEnvironmentVariable("apiKeySecret");
+      static string apiKey = System.Environment.GetEnvironmentVariable("apiKey");
+      static string accessToken = System.Environment.GetEnvironmentVariable("accessToken");
+      static string accessTokenSecret = System.Environment.GetEnvironmentVariable("accessTokenSecret");
+      
         static List<TmData>? tmDataSet = new List<TmData>()
         {
             new TmData() 
@@ -39,12 +44,15 @@ namespace TwitterBot
 
         static async Task Main(string[] args)
         {
-            var userClient = new TwitterClient(Config.apiKey, Config.apiKeySecret, Config.accessToken, Config.accessTokenSecret);
+            var userClient = new TwitterClient(apiKey, apiKeySecret, accessToken, accessTokenSecret);
             var user = await userClient.Users.GetAuthenticatedUserAsync();
             while (true)
             {
                 CheckForNewData();
-                var tweet = await userClient.Tweets.PublishTweetAsync(Messages.Dequeue());
+                if (Messages.Count > 0)
+                {
+                    var tweet = await userClient.Tweets.PublishTweetAsync(Messages.Dequeue());
+                }
             }
 
 
