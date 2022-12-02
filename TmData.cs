@@ -11,6 +11,7 @@ namespace TwitterBot
         public string playerName { get; set; }
         public string currentClub { get; set; }
         public string interestedClub { get; set; }
+        public string url { get; set; }
     }
     internal class TmDataSet
     {

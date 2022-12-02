@@ -7,6 +7,7 @@ using unirest_net.http;
 using System.Text.Json;
 using Tweetinvi.Client;
 using System.Threading;
+using System.Xml.Linq;
 
 namespace TwitterBot
 {
@@ -24,7 +25,7 @@ namespace TwitterBot
 
         static List<TmData>? tmDataSet = new List<TmData>()
         {
-            new TmData() 
+            new TmData()
             {
                 playerName="Test",
                 currentClub="Test",
@@ -44,7 +45,7 @@ namespace TwitterBot
             }
         };
         static Queue<string> Messages { get; set; } = new Queue<string>();
-        static string[] blackList { get; set; } = new string[] { "Lionel Messi", "Haris Seferovic", "Mertcan Ayhan", "Fabiano Parisi", "Darío Osorio", "Cristiano Ronaldo", "Deniz Undav", "Bruno Fernandes", "Nathanaël Mbuku", "Panagiotis Retsos", "Billy Gilmour" };
+        static List<string> blackList { get; set; } = new List<string> { "Lars Stindl", "Tim Breithaupt", "Marcus Thuram","Jadon Sancho", "Gue-sung Cho", "Luis Suárez", "Gustavo Scarpa", "Lionel Messi", "Haris Seferovic", "Mertcan Ayhan", "Fabiano Parisi", "Darío Osorio", "Cristiano Ronaldo", "Deniz Undav", "Bruno Fernandes", "Nathanaël Mbuku", "Panagiotis Retsos", "Billy Gilmour", "Jude Bellingham", "Andrey Santos" };
 
 
         static async Task Main(string[] args)
@@ -64,7 +65,7 @@ namespace TwitterBot
                         //Thread.Sleep(15000);
                     }
                 }
-                Thread.Sleep(120000);
+                Thread.Sleep(240000);
             }
 
 
@@ -77,7 +78,7 @@ namespace TwitterBot
                 .header("X-RapidAPI-Key", Config.rapidKey)
                 .header("Accept", "application/json")
                 .asJson<string>();
-            tmDataSet = JsonSerializer.Deserialize<List<TmData>>(response.Body);            
+            tmDataSet = JsonSerializer.Deserialize<List<TmData>>(response.Body);
         }
 
         static async void CheckForNewData(string league)
@@ -86,7 +87,7 @@ namespace TwitterBot
             List<TmData> newFirstThree = new List<TmData> { tmDataSet[0], tmDataSet[1], tmDataSet[2] };
             foreach (TmData item in newFirstThree)
             {
-                if (!blackList.Contains(item.playerName))
+                if (!blackList.Contains(item.playerName) && !blackList.Contains(item.url))
                 {
                     item.currentClub = item.currentClub.Replace(" ", "");
                     item.currentClub = item.currentClub.Replace(".", "");
@@ -114,14 +115,21 @@ namespace TwitterBot
                 $"The worst trade deal in the history of trade deals? #{tmData.interestedClub} looking to sign {tmData.playerName} of #{tmData.currentClub}",
                 $"Is this good business? #{tmData.interestedClub} rumored to have taken an interest in {tmData.playerName} of #{tmData.currentClub}",
                 $"#{tmData.interestedClub} considering to buy #{tmData.currentClub}'s {tmData.playerName}? What are they thinking?",
+                $"{tmData.playerName} of #{tmData.currentClub} is rumoured to be an option for #{tmData.interestedClub}",
+                $"#{tmData.currentClub}'s {tmData.playerName} could be joining #{tmData.interestedClub}, sources say",
+                $"#{tmData.interestedClub} are after {tmData.playerName} \n #{tmData.currentClub}",
+                $"#Is {tmData.playerName} really moving from #{tmData.currentClub} to #{tmData.interestedClub}?",
+                $"{tmData.playerName} to #{tmData.interestedClub}? Real or not? \n #{tmData.currentClub}",
+                $"{tmData.playerName} to #{tmData.interestedClub}? Is this serious? \n #{tmData.currentClub}",
+
 
             };
             Random random = new Random();
             int randIndex = random.Next(possibleMessages.Count);
             string message = possibleMessages[randIndex];
-            if (!blackList.Contains(tmData.playerName))
+            if (!blackList.Contains(tmData.playerName) && !blackList.Contains(tmData.url))
             {
-                blackList.Append(tmData.playerName);
+                blackList.Add(tmData.url);
                 Messages.Enqueue(message);
             }
         }
