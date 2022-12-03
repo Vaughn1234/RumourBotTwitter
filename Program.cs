@@ -45,7 +45,7 @@ namespace TwitterBot
             }
         };
         static Queue<string> Messages { get; set; } = new Queue<string>();
-        static List<string> blackList { get; set; } = new List<string> { "Lars Stindl", "Tim Breithaupt", "Marcus Thuram","Jadon Sancho", "Gue-sung Cho", "Luis Suárez", "Gustavo Scarpa", "Lionel Messi", "Haris Seferovic", "Mertcan Ayhan", "Fabiano Parisi", "Darío Osorio", "Cristiano Ronaldo", "Deniz Undav", "Bruno Fernandes", "Nathanaël Mbuku", "Panagiotis Retsos", "Billy Gilmour", "Jude Bellingham", "Andrey Santos" };
+        static List<string> blackList { get; set; } = new List<string> { "Josip Brekalo","Josko Gvardiol","Memphis Depay","Szymon Zurkowski","João Moutinho", "Lars Stindl", "Tim Breithaupt", "Marcus Thuram","Jadon Sancho", "Gue-sung Cho", "Luis Suárez", "Gustavo Scarpa", "Lionel Messi", "Haris Seferovic", "Mertcan Ayhan", "Fabiano Parisi", "Darío Osorio", "Cristiano Ronaldo", "Deniz Undav", "Bruno Fernandes", "Nathanaël Mbuku", "Panagiotis Retsos", "Billy Gilmour", "Jude Bellingham", "Andrey Santos" };
 
 
         static async Task Main(string[] args)
