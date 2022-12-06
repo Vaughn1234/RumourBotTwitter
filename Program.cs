@@ -89,7 +89,7 @@ namespace TwitterBot
             List<TmData> newFirstThree = new List<TmData> { tmDataSet[0], tmDataSet[1], tmDataSet[2] };
             foreach (TmData item in newFirstThree)
             {
-                if (!ContainsTmData(item) && !blackList.Contains(item.playerName))
+                if (!ContainsTmData(item))
                 {
                     item.currentClub = item.currentClub.Replace(" ", "");
                     item.currentClub = item.currentClub.Replace(".", "");
@@ -133,7 +133,7 @@ namespace TwitterBot
             Random random = new Random();
             int randIndex = random.Next(possibleMessages.Count);
             string message = possibleMessages[randIndex];
-            if (!ContainsTmData(tmData) && !blackList.Contains(tmData.playerName))
+            if (!ContainsTmData(tmData))
             {
                 Messages.Enqueue(message);
                 WriteToFile(tmData);
@@ -142,17 +142,21 @@ namespace TwitterBot
 
         static async Task WriteToFile(TmData tmData)
         {
-            var jsonString = JsonSerializer.Serialize(tmData);
+            var jsonString = JsonSerializer.Serialize(tmData.url);
             using StreamWriter file = new("C:\\Users\\776616457_MP1001\\Development\\TwitterBot\\log.json", append: true);
-            await file.WriteLineAsync(jsonString);
+            await file.WriteLineAsync($"{jsonString}\n");
         }
 
         static bool ContainsTmData(TmData tmData)
         {
-            if (!File.Exists("log.json"))
+            if (!File.Exists("C:\\Users\\776616457_MP1001\\Development\\TwitterBot\\log.json"))
                 return false;
-            else if (File.ReadAllLines("log.json").Contains(tmData.url))
+            
+            var urlArray = File.ReadAllLines("C:\\Users\\776616457_MP1001\\Development\\TwitterBot\\log.json");
+            if (urlArray.Contains($"\"{tmData.url}\""))
+            {
                 return true;
+            }
             else
                 return false;
         }
