@@ -8,6 +8,7 @@ using System.Text.Json;
 using Tweetinvi.Client;
 using System.Threading;
 using System.Xml.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace TwitterBot
 {
@@ -45,7 +46,7 @@ namespace TwitterBot
             }
         };
         static Queue<string> Messages { get; set; } = new Queue<string>();
-        static List<string> blackList { get; set; } = new List<string> { "Josip Brekalo","Josko Gvardiol","Memphis Depay","Szymon Zurkowski","João Moutinho", "Lars Stindl", "Tim Breithaupt", "Marcus Thuram","Jadon Sancho", "Gue-sung Cho", "Luis Suárez", "Gustavo Scarpa", "Lionel Messi", "Haris Seferovic", "Mertcan Ayhan", "Fabiano Parisi", "Darío Osorio", "Cristiano Ronaldo", "Deniz Undav", "Bruno Fernandes", "Nathanaël Mbuku", "Panagiotis Retsos", "Billy Gilmour", "Jude Bellingham", "Andrey Santos" };
+        static List<string> blackList { get; set; } = new List<string> { "Donyell Malen", "Piero Hincapié", "Jakub Kiwior", "Gabriel Martinelli", "Yann Sommer", "Josip Brekalo","Josko Gvardiol","Memphis Depay","Szymon Zurkowski","João Moutinho", "Lars Stindl", "Tim Breithaupt", "Marcus Thuram","Jadon Sancho", "Gue-sung Cho", "Luis Suárez", "Gustavo Scarpa", "Lionel Messi", "Haris Seferovic", "Mertcan Ayhan", "Fabiano Parisi", "Darío Osorio", "Cristiano Ronaldo", "Deniz Undav", "Bruno Fernandes", "Nathanaël Mbuku", "Panagiotis Retsos", "Billy Gilmour", "Jude Bellingham", "Andrey Santos" };
 
 
         static async Task Main(string[] args)
@@ -61,8 +62,9 @@ namespace TwitterBot
                     if (Messages.Count > 0)
                     {
                         var tweet = await userClient.Tweets.PublishTweetAsync(Messages.Dequeue());
-                        Console.WriteLine("Tweet sent!");
+                        Console.WriteLine($"Tweet sent! {tweet}");
                         //Thread.Sleep(15000);
+                        
                     }
                 }
                 Thread.Sleep(240000);
@@ -87,7 +89,7 @@ namespace TwitterBot
             List<TmData> newFirstThree = new List<TmData> { tmDataSet[0], tmDataSet[1], tmDataSet[2] };
             foreach (TmData item in newFirstThree)
             {
-                if (!blackList.Contains(item.playerName) && !blackList.Contains(item.url))
+                if (!ContainsTmData(item) && !blackList.Contains(item.playerName))
                 {
                     item.currentClub = item.currentClub.Replace(" ", "");
                     item.currentClub = item.currentClub.Replace(".", "");
@@ -118,20 +120,41 @@ namespace TwitterBot
                 $"{tmData.playerName} of #{tmData.currentClub} is rumoured to be an option for #{tmData.interestedClub}",
                 $"#{tmData.currentClub}'s {tmData.playerName} could be joining #{tmData.interestedClub}, sources say",
                 $"#{tmData.interestedClub} are after {tmData.playerName} \n #{tmData.currentClub}",
-                $"#Is {tmData.playerName} really moving from #{tmData.currentClub} to #{tmData.interestedClub}?",
+                $"Is {tmData.playerName} really moving from #{tmData.currentClub} to #{tmData.interestedClub}?",
                 $"{tmData.playerName} to #{tmData.interestedClub}? Real or not? \n #{tmData.currentClub}",
                 $"{tmData.playerName} to #{tmData.interestedClub}? Is this serious? \n #{tmData.currentClub}",
+                $"Word on the street is that {tmData.playerName} will switch from #{tmData.currentClub} to #{tmData.interestedClub}",
+                $"#{tmData.interestedClub} is interested in signing {tmData.playerName}. Now that would be a good deal! \n #{tmData.currentClub}",
+                $"Why would #{tmData.currentClub} let {tmData.playerName} go? Especially to #{tmData.interestedClub}",
+                $"According to press reports, #{tmData.interestedClub} is interested in signing #{tmData.currentClub}'s {tmData.playerName}"
 
 
             };
             Random random = new Random();
             int randIndex = random.Next(possibleMessages.Count);
             string message = possibleMessages[randIndex];
-            if (!blackList.Contains(tmData.playerName) && !blackList.Contains(tmData.url))
+            if (!ContainsTmData(tmData) && !blackList.Contains(tmData.playerName))
             {
-                blackList.Add(tmData.url);
                 Messages.Enqueue(message);
+                WriteToFile(tmData);
             }
+        }
+
+        static async Task WriteToFile(TmData tmData)
+        {
+            var jsonString = JsonSerializer.Serialize(tmData);
+            using StreamWriter file = new("C:\\Users\\776616457_MP1001\\Development\\TwitterBot\\log.json", append: true);
+            await file.WriteLineAsync(jsonString);
+        }
+
+        static bool ContainsTmData(TmData tmData)
+        {
+            if (!File.Exists("log.json"))
+                return false;
+            else if (File.ReadAllLines("log.json").Contains(tmData.url))
+                return true;
+            else
+                return false;
         }
     }
 
