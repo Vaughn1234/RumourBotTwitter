@@ -13,8 +13,14 @@ namespace TwitterBot
         public string interestedClub { get; set; }
         public string url { get; set; }
     }
-    internal class TmDataSet
+
+    internal class TransferData
     {
-        public TmData tmData;
+        public string playerName { get; set; }
+        public string transferFrom { get; set; }
+        public string transferTo { get; set; }
+        public string dateOfTransfer { get; set; }
+        public string marketValue { get; set; }
+        public string transferValue { get; set; }
     }
 }

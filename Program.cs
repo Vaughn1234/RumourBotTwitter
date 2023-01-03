@@ -15,17 +15,44 @@ namespace TwitterBot
 {
     class Program
     {
-        //static string apiKeySecret = System.Environment.GetEnvironmentVariable("apiKeySecret");
-        //static string apiKey = System.Environment.GetEnvironmentVariable("apiKey");
-        //static string accessToken = System.Environment.GetEnvironmentVariable("accessToken");
-        //static string accessTokenSecret = System.Environment.GetEnvironmentVariable("accessTokenSecret");
-
         static string path = "C:\\Users\\776616457_MP1001\\Development\\TwitterBot";
-        
 
         static List<string> Leagues = new List<string>()
         {
             "de1", "gb1", "fr1", "it1", "es1"
+        };
+
+        static List<TransferData> transferData = new List<TransferData>()
+        {
+            new TransferData()
+            {
+                playerName ="Test",
+                transferFrom = "Test",
+                transferTo = "Test",
+                dateOfTransfer = "Test",
+                marketValue = "Test",
+                transferValue = "Test"
+            },
+            new TransferData()
+            {
+                playerName ="Test",
+                transferFrom = "Test",
+                transferTo = "Test",
+                dateOfTransfer = "Test",
+                marketValue = "Test",
+                transferValue = "Test"
+
+            },
+            new TransferData()
+            {
+                playerName ="Test",
+                transferFrom = "Test",
+                transferTo = "Test",
+                dateOfTransfer = "Test",
+                marketValue = "Test",
+                transferValue = "Test"
+
+            }
         };
 
         static List<TmData>? tmDataSet = new List<TmData>()
@@ -61,14 +88,14 @@ namespace TwitterBot
             {
                 foreach (string league in Leagues)
                 {
-
+                    CheckForTransfers();
                     CheckForNewData(league);
-                    if (Messages.Count > 0)
+                    while (Messages.Count > 0)
                     {
                         var tweet = await userClient.Tweets.PublishTweetAsync(Messages.Dequeue());
                         Console.WriteLine($"Tweet sent! {tweet}");
                         //Thread.Sleep(15000);
-                        
+
                     }
                 }
                 Thread.Sleep(240000);
@@ -87,6 +114,41 @@ namespace TwitterBot
             tmDataSet = JsonSerializer.Deserialize<List<TmData>>(response.Body);
         }
 
+        static async void GetTransferData()
+        {
+            HttpResponse<string> response = Unirest.get($"https://football-rumour-mill.p.rapidapi.com/transfers")
+                .header("X-RapidAPI-Host", "football-rumour-mill.p.rapidapi.com")
+                .header("X-RapidAPI-Key", Config.rapidKey)
+                .header("Accept", "application/json")
+                .asJson<string>();
+            transferData = JsonSerializer.Deserialize<List<TransferData>>(response.Body);
+        }
+
+
+        static async void CheckForTransfers()
+        {
+            GetTransferData();
+            List<TransferData> firstTransfers = new List<TransferData> { transferData[0], transferData[1], transferData[2] };
+
+            foreach (TransferData item in firstTransfers)
+            {
+                if (!ContainsTransferData(item))
+                {
+                    item.transferFrom = item.transferFrom.Replace(" ", "");
+                    item.transferFrom = item.transferFrom.Replace(".", "");
+                    item.transferTo = item.transferTo.Replace(" ", "");
+                    item.transferTo = item.transferTo.Replace(".", "");
+                    Console.WriteLine($"{item.playerName}, {item.transferValue}");
+                    Tweets.GenerateTweet(item);
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine($"{DateTime.Now} running ... {item.playerName}");
+                }
+            }
+        }
+    
         static async void CheckForNewData(string league)
         {
             GetTmData(league);
@@ -99,7 +161,7 @@ namespace TwitterBot
                     item.currentClub = item.currentClub.Replace(".", "");
                     item.interestedClub = item.interestedClub.Replace(" ", "");
                     item.interestedClub = item.interestedClub.Replace(".", "");
-                    Console.WriteLine(item.playerName, league);
+                    Console.WriteLine($"{item.playerName}, {league}");
                     Tweets.GenerateTweet(item);
                     return;
                 }
@@ -117,6 +179,12 @@ namespace TwitterBot
             using StreamWriter file = new($"{path}/log.json", append: true);
             await file.WriteLineAsync($"{jsonString}\n");
         }
+        public static async Task WriteToFile(TransferData transferData)
+        {
+            var jsonString = JsonSerializer.Serialize(transferData.playerName);
+            using StreamWriter file = new($"{path}/Tlog.json", append: true);
+            await file.WriteLineAsync($"{jsonString}\n");
+        }
 
         public static bool ContainsTmData(TmData tmData)
         {
@@ -125,6 +193,19 @@ namespace TwitterBot
             
             var urlArray = File.ReadAllLines($"{path}/log.json");
             if (urlArray.Contains($"\"{tmData.url}\""))
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+        public static bool ContainsTransferData(TransferData transferData)
+        {
+            if (!File.Exists($"{path}/Tlog.json"))
+                return false;
+
+            var urlArray = File.ReadAllLines($"{path}/Tlog.json");
+            if (urlArray.Contains($"\"{transferData.playerName}\""))
             {
                 return true;
             }
