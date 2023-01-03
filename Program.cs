@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 using Tweetinvi;
 using unirest_net.http;
 using System.Text.Json;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Tweetinvi.Client;
 using System.Threading;
 using System.Xml.Linq;
@@ -15,6 +17,10 @@ namespace TwitterBot
 {
     class Program
     {
+        static JsonSerializerOptions options = new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+        };
         static string path = "C:\\Users\\776616457_MP1001\\Development\\TwitterBot";
 
         static List<string> Leagues = new List<string>()
@@ -111,7 +117,7 @@ namespace TwitterBot
                 .header("X-RapidAPI-Key", Config.rapidKey)
                 .header("Accept", "application/json")
                 .asJson<string>();
-            tmDataSet = JsonSerializer.Deserialize<List<TmData>>(response.Body);
+            tmDataSet = JsonSerializer.Deserialize<List<TmData>>(response.Body, options);
         }
 
         static async void GetTransferData()
@@ -121,7 +127,7 @@ namespace TwitterBot
                 .header("X-RapidAPI-Key", Config.rapidKey)
                 .header("Accept", "application/json")
                 .asJson<string>();
-            transferData = JsonSerializer.Deserialize<List<TransferData>>(response.Body);
+            transferData = JsonSerializer.Deserialize<List<TransferData>>(response.Body, options);
         }
 
 
@@ -175,13 +181,13 @@ namespace TwitterBot
 
         public static async Task WriteToFile(TmData tmData)
         {
-            var jsonString = JsonSerializer.Serialize(tmData.url);
+            var jsonString = JsonSerializer.Serialize(tmData.url, options);
             using StreamWriter file = new($"{path}/log.json", append: true);
             await file.WriteLineAsync($"{jsonString}\n");
         }
         public static async Task WriteToFile(TransferData transferData)
         {
-            var jsonString = JsonSerializer.Serialize(transferData.playerName);
+            var jsonString = JsonSerializer.Serialize(transferData.playerName, options);
             using StreamWriter file = new($"{path}/Tlog.json", append: true);
             await file.WriteLineAsync($"{jsonString}\n");
         }
