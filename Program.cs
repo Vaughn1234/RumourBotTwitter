@@ -198,7 +198,8 @@ namespace TwitterBot
                 return false;
             
             var urlArray = File.ReadAllLines($"{path}/log.json");
-            if (urlArray.Contains($"\"{tmData.url}\""))
+            var transferArray = File.ReadAllLines($"{path}/Tlog.json");
+            if (urlArray.Contains($"\"{tmData.url}\"") || transferArray.Contains($"\"{tmData.playerName}\""))
             {
                 return true;
             }
@@ -210,8 +211,8 @@ namespace TwitterBot
             if (!File.Exists($"{path}/Tlog.json"))
                 return false;
 
-            var urlArray = File.ReadAllLines($"{path}/Tlog.json");
-            if (urlArray.Contains($"\"{transferData.playerName}\""))
+            var transferArray = File.ReadAllLines($"{path}/Tlog.json");
+            if (transferArray.Contains($"\"{transferData.playerName}\""))
             {
                 return true;
             }
