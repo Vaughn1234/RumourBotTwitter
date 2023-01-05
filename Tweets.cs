@@ -198,7 +198,7 @@ namespace TwitterBot
             };
             Random random = new Random();
             string hashtagsToAdd = "";
-            for (int i = 0; i < random.Next(0, 4); i++)
+            for (int i = 0; i < random.Next(0, 3); i++)
             {
                 int randIndex = random.Next(possibleHashtags.Count);
                 hashtagsToAdd += $"{possibleHashtags[randIndex]} ";
@@ -252,6 +252,11 @@ namespace TwitterBot
                     $"🎉 WELCOME TO THE CLUB 🎉 {transferData.playerName} has joined {transferData.transferTo} on loan from {transferData.transferFrom}. We cannot wait to see what he brings to the pitch. 🔥",
 
                 };
+            }
+            else if (transferData.transferTo.ToLower().Contains("vereinslos"))
+            {
+                possibleMessages = new List<string> {
+                    $"{transferData.playerName} leaves his old club {transferData.transferFrom} and is now a Free Agent!"}
             }
             else
             {

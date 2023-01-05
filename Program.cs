@@ -92,9 +92,9 @@ namespace TwitterBot
             var user = await userClient.Users.GetAuthenticatedUserAsync();
             while (true)
             {
+                CheckForTransfers();
                 foreach (string league in Leagues)
                 {
-                    CheckForTransfers();
                     CheckForNewData(league);
                     while (Messages.Count > 0)
                     {
