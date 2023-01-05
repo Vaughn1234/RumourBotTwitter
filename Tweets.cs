@@ -256,7 +256,7 @@ namespace TwitterBot
             else if (transferData.transferTo.ToLower().Contains("vereinslos"))
             {
                 possibleMessages = new List<string> {
-                    $"{transferData.playerName} leaves his old club {transferData.transferFrom} and is now a Free Agent!"}
+                    $"{transferData.playerName} leaves his old club {transferData.transferFrom} and is now a Free Agent!"};
             }
             else
             {
