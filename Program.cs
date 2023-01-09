@@ -19,7 +19,7 @@ namespace TwitterBot
     {
         static JsonSerializerOptions options = new JsonSerializerOptions
         {
-            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
         static string path = "C:\\Users\\776616457_MP1001\\Development\\TwitterBot";
 
@@ -197,8 +197,8 @@ namespace TwitterBot
             if (!File.Exists($"{path}/log.json"))
                 return false;
             
-            var urlArray = File.ReadAllLines($"{path}/log.json");
-            var transferArray = File.ReadAllLines($"{path}/Tlog.json");
+            var urlArray = File.ReadAllLines($"{path}/log.json", encoding: System.Text.Encoding.UTF8);
+            var transferArray = File.ReadAllLines($"{path}/Tlog.json", encoding: System.Text.Encoding.UTF8);
             if (urlArray.Contains($"\"{tmData.url}\"") || transferArray.Contains($"\"{tmData.playerName}\""))
             {
                 return true;
@@ -211,7 +211,7 @@ namespace TwitterBot
             if (!File.Exists($"{path}/Tlog.json"))
                 return false;
 
-            var transferArray = File.ReadAllLines($"{path}/Tlog.json");
+            var transferArray = File.ReadAllLines($"{path}/Tlog.json", encoding:System.Text.Encoding.UTF8);
             if (transferArray.Contains($"\"{transferData.playerName}\""))
             {
                 return true;
