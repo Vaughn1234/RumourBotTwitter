@@ -226,6 +226,23 @@ namespace TwitterBot
                     $"📢📢📢 It's official 📢📢📢 {transferData.playerName} has made the move from {transferData.transferFrom} to {transferData.transferTo}! 🤝 This transfer is sure to make waves in the football world. 🌊",
                     $"Welcome to the club, {transferData.playerName}! 🎉 The player has transferred from {transferData.transferFrom} to {transferData.transferTo}. We can't wait to see what he brings to the pitch. 🔥",
                     $"🚨🚨🚨 Hold on to your seats, football fans! 🚨🚨🚨 {transferData.playerName} has transferred from {transferData.transferFrom} to {transferData.transferTo}! 🤝 This is sure to be an exciting season with {transferData.playerName} on the roster. 🔥",
+                    $"{transferData.playerName} is on the move! 🚶‍♂️💼 {transferData.transferTo} here we come! 😎",
+                    $"Get ready {transferData.transferTo} fans! {transferData.playerName} is joining the squad! 🔥🙌",
+                    $"Big news! {transferData.playerName} is leaving {transferData.transferFrom} and headed to {transferData.transferTo}! 🚪🔜",
+                    $"The transfer rumors were true! {transferData.playerName} is officially a member of {transferData.transferTo}! 🤝",
+                    $"{transferData.transferTo} just got a whole lot better with the addition of {transferData.playerName}! 💪🎉",
+                    $"{transferData.playerName} is switching teams! Say goodbye to {transferData.transferFrom} and hello to {transferData.transferTo}! 🚶‍♂️💼",
+                    $"It's official! {transferData.playerName} is now a member of {transferData.transferTo}! What a signing! 🤩",
+                    $"{transferData.playerName} is leaving {transferData.transferFrom} for greener pastures at {transferData.transferTo}! 🌱🔜",
+                    $"Change of scenery for {transferData.playerName}! He's off to {transferData.transferTo} from {transferData.transferFrom}! 🌃🚶‍♂️",
+                    $"{transferData.playerName} is the latest addition to {transferData.transferTo}! Welcome to the team! 🤝🔥",
+                    $"{transferData.transferTo} just got a lot stronger with the signing of {transferData.playerName}! 💪🎉",
+                    $"{transferData.playerName} is leaving {transferData.transferFrom} and joining {transferData.transferTo}! Are you ready? 🔜👀",
+                    $"{transferData.transferTo}'s squad is about to get a whole lot better with the addition of {transferData.playerName}! 🤩🚶‍♂️",
+                    $"{transferData.playerName} is off to {transferData.transferTo} from {transferData.transferFrom}! The transfer everyone has been waiting for!🎉",
+                    $"{transferData.playerName} is leaving {transferData.transferFrom} for a new challenge at {transferData.transferTo}! Exciting times!🔜",
+                    $"{transferData.playerName} is joining {transferData.transferTo}! This transfer is bound to shake things up!🔥",
+                    $"It's a new chapter for {transferData.playerName} as he joins {transferData.transferTo} from {transferData.transferFrom}! 📚🚶‍♂️"
                 };
             }
             else if (transferData.transferValue.ToLower().Contains("loan"))
@@ -253,10 +270,91 @@ namespace TwitterBot
 
                 };
             }
-            else if (transferData.transferTo.ToLower().Contains("vereinslos"))
+            else if (transferData.transferTo.ToLower().Contains("WithoutClub"))
             {
                 possibleMessages = new List<string> {
-                    $"{transferData.playerName} leaves his old club {transferData.transferFrom} and is now a Free Agent!"};
+                    $"{transferData.playerName} leaves his old club {transferData.transferFrom} and is now a Free Agent!",
+                    $"Breaking news! {transferData.playerName} has been released by {transferData.transferFrom} and is now a free agent!🔓",
+                    $"It's official! {transferData.playerName} is now a free agent after being let go by {transferData.transferFrom}!🆓",
+                    $"{transferData.playerName}'s time with {transferData.transferFrom} has come to an end as he's been released and is now a free agent!🚪",
+                    $"{transferData.playerName} is now available on a free transfer after being released by {transferData.transferFrom}! 🔜🆓",
+                    $"{transferData.transferFrom} has decided to part ways with {transferData.playerName}, who is now a free agent!💔",
+                    $"{transferData.playerName} is now free to look for a new club after being released by {transferData.transferFrom}!🔓💼",
+                    $"{transferData.playerName}'s time with {transferData.transferFrom} has come to an end, leaving him without a club!🚶‍♂️💔",
+                    $"{transferData.transferFrom} has decided not to renew {transferData.playerName}'s contract, leaving him a free agent!🆓",
+                    $"{transferData.playerName} has been released by {transferData.transferFrom} and is now on the lookout for a new club!🔜💼",
+                    $"{transferData.playerName} is now a free agent after being let go by {transferData.transferFrom}! Which team will he join next?🤔",
+                    $"It's the end of an era as {transferData.playerName} has been released by {transferData.transferFrom} and is now a free agent!🚪",
+                    $"{transferData.transferFrom} and {transferData.playerName} has mutually decided to part ways, leaving him a free agent!🔓💔",
+                    $"{transferData.playerName} is now a free agent after being released by {transferData.transferFrom}! Who will be the lucky club to sign him?🔜🆓",
+                    $"{transferData.transferFrom} has decided not to retain {transferData.playerName}'s services, he is now a free agent and searching for a new club!💼🔓"
+                };
+            }
+            else if (transferData.transferFrom.ToLower().Contains("WithoutClub"))
+            {
+                possibleMessages = new List<string>() {
+                    $"Big news! {transferData.playerName} has signed with {transferData.transferTo} after being a free agent! 🤝💼",
+                    $"Welcome to the team! {transferData.playerName} has joined {transferData.transferTo} after being a free agent! 🔜🏠",
+                    $"{transferData.transferTo} has made a great acquisition by signing {transferData.playerName} after his time as a free agent! 💪🚶‍♂️",
+                    $"{transferData.playerName} has finally found a new club at {transferData.transferTo} after being a free agent! 🏠🔜",
+                    $"{transferData.transferTo} has just made a big signing by adding {transferData.playerName} to the squad after being a free agent! 🎉🤝",
+                    $"{transferData.playerName} is leaving the free agent market and joining {transferData.transferTo}! 💼🔜",
+                    $"{transferData.transferTo} has just signed a top free agent in {transferData.playerName}! 🤝🔥",
+                    $"Free agent alert! {transferData.playerName} has found a new club at {transferData.transferTo}! 🔜🆓",
+                    $"{transferData.transferTo} has landed a big signing in {transferData.playerName} who was previously a free agent! 🎉🚶‍♂️",
+                    $"{transferData.playerName} has signed with {transferData.transferTo} after being a free agent!",
+                    $"{transferData.transferTo} has just signed a player who was previously a free agent in {transferData.playerName}! What a great addition to the squad!💪💼",
+                    $"{transferData.playerName} has signed with {transferData.transferTo} after being a free agent, boosting the team's chances!🤝🔜",
+                    $"{transferData.transferTo} has picked up a fantastic signing in {transferData.playerName} who was previously a free agent!💰🔥",
+                    $"{transferData.playerName} has joined {transferData.transferTo} after being a free agent, this will be a great move for the player and the club!🚶‍♂️🆓"
+};
+            }
+            else if (transferData.transferValue.ToLower().Contains("free transfer"))
+            {
+                possibleMessages = new List<string>() 
+                {
+                    $"{transferData.playerName} is on the move! 🚶‍♂️💼 {transferData.transferTo} here we come! 😎",
+                    $"Get ready {transferData.transferTo} fans! {transferData.playerName} is joining the squad! 🔥🙌",
+                    $"Big news! {transferData.playerName} is leaving {transferData.transferFrom} and headed to {transferData.transferTo}! 🚪🔜",
+                    $"The transfer rumors were true! {transferData.playerName} is officially a member of {transferData.transferTo}! 🤝",
+                    $"{transferData.transferTo} just got a whole lot better with the addition of {transferData.playerName}! 💪🎉",
+                    $"{transferData.playerName} is switching teams! Say goodbye to {transferData.transferFrom} and hello to {transferData.transferTo}! 🚶‍♂️💼",
+                    $"It's official! {transferData.playerName} is now a member of {transferData.transferTo}! What a signing! 🤩",
+                    $"{transferData.playerName} is leaving {transferData.transferFrom} for greener pastures at {transferData.transferTo}! 🌱🔜",
+                    $"Change of scenery for {transferData.playerName}! He's off to {transferData.transferTo} from {transferData.transferFrom}! 🌃🚶‍♂️",
+                    $"{transferData.playerName} is the latest addition to {transferData.transferTo}! Welcome to the team! 🤝🔥",
+                    $"{transferData.transferTo} just got a lot stronger with the signing of {transferData.playerName}! 💪🎉",
+                    $"{transferData.playerName} is leaving {transferData.transferFrom} and joining {transferData.transferTo}! Are you ready? 🔜👀",
+                    $"{transferData.transferTo}'s squad is about to get a whole lot better with the addition of {transferData.playerName}! 🤩🚶‍♂️",
+                    $"{transferData.playerName} is off to {transferData.transferTo} from {transferData.transferFrom}! The transfer everyone has been waiting for!🎉",
+                    $"{transferData.playerName} is leaving {transferData.transferFrom} for a new challenge at {transferData.transferTo}! Exciting times!🔜",
+                    $"{transferData.playerName} is joining {transferData.transferTo}! This transfer is bound to shake things up!🔥",
+                    $"It's a new chapter for {transferData.playerName} as he joins {transferData.transferTo} from {transferData.transferFrom}! 📚🚶‍♂️",
+                    $"Breaking news! {transferData.playerName} has signed with {transferData.transferTo} as a free transfer! 🆓🤝",
+                    $"Free transfer alert! {transferData.playerName} is now a member of {transferData.transferTo}! 💰🔜",
+                    $"{transferData.transferTo} just got a great deal with the signing of {transferData.playerName} as a free transfer! 💸🎉",
+                    $"{transferData.transferTo} just made a savvy move by signing {transferData.playerName} as a free transfer! 💪🚶‍♂️",
+                    $"{transferData.playerName} is leaving {transferData.transferFrom} and signing as a free transfer with {transferData.transferTo}! 💼🔜",
+                    $"{transferData.transferTo} just signed {transferData.playerName} as a free transfer! What a coup! 🎉💰",
+                    $"{transferData.playerName} has left {transferData.transferFrom} and signed with {transferData.transferTo} as a free transfer! 🚶‍♂️🆓",
+                    $"{transferData.transferTo} just signed {transferData.playerName} as a free transfer! Smart move!💰🔥",
+                    $"{transferData.transferTo} just signed {transferData.playerName} as a free transfer! what a bargain!💸🎉",
+                    $"{transferData.playerName} left {transferData.transferFrom} on a free and signed with {transferData.transferTo}!🚶‍♂️🆓",
+                    $"Breaking news! {transferData.playerName} has signed with {transferData.transferTo} without costing a fee from {transferData.transferFrom}! 🤝💰",
+                    $"Transfer shocker! {transferData.playerName} signed with {transferData.transferTo} with no transfer fee from {transferData.transferFrom}! 🔜💸",
+                    $"{transferData.transferTo} just got a great deal with the signing of {transferData.playerName} with no transfer fee from {transferData.transferFrom}! 🎉💰",
+                    $"{transferData.playerName} has signed with {transferData.transferTo} for free from {transferData.transferFrom}! What a steal! 🤑",
+                    $"{transferData.transferTo} just made a savvy move by signing {transferData.playerName} at no cost from {transferData.transferFrom}! 💪🚶‍♂️",
+                    $"{transferData.playerName} is leaving {transferData.transferFrom} and signing without costing a dime with {transferData.transferTo}! 💼🔜",
+                    $"{transferData.playerName} has just signed with {transferData.transferTo} without any transfer fee from {transferData.transferFrom}! A smart move! 🤝🔥",
+                    $"{transferData.transferTo} just signed {transferData.playerName} at no cost from {transferData.transferFrom}! What a coup! 🎉💰",
+                    $"{transferData.playerName} has left {transferData.transferFrom} and signed with {transferData.transferTo} without spending a dime! 🚶‍♂️💸",
+                    $"{transferData.playerName} has just signed with {transferData.transferTo} without a transfer fee from {transferData.transferFrom}! Exciting times! 💼🔜",
+                    $"{transferData.transferTo} just signed {transferData.playerName} with no transfer fee from {transferData.transferFrom}! Smart move!💰🔥",
+                    $"{transferData.playerName} has signed with {transferData.transferTo} without any transfer fee from {transferData.transferFrom}! A great addition!🤝💪",
+                    $"{transferData.transferTo} just signed {transferData.playerName} with no transfer fee from {transferData.transferFrom}! what a bargain!💸🎉",
+                    $"{transferData.playerName} has left {transferData.transferFrom} and signed with {transferData.transferTo} without any transfer fee!🚶‍♂️💰"
+                };
             }
             else
             {

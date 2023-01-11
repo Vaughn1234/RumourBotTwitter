@@ -103,6 +103,7 @@ namespace TwitterBot
                         //Thread.Sleep(15000);
 
                     }
+                    Thread.Sleep(5000);
                 }
                 Thread.Sleep(240000);
             }
