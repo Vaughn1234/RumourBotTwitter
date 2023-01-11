@@ -129,10 +129,12 @@ namespace TwitterBot
             int randIndex = random.Next(possibleMessages.Count);
             string message = possibleMessages[randIndex];
             message = ApplyHashtags(message, tmData);
-            if (!Program.ContainsTmData(tmData))
+            if (!Program.rumourLog.Any(i => i.url == tmData.url) && !Program.transferLog.Any(i => i.playerName == tmData.playerName))
             {
                 Program.Messages.Enqueue(message);
-                Program.WriteToFile(tmData);
+                Program.rumourLog.Add(tmData);
+                Console.WriteLine(Program.rumourLog);
+                //Program.WriteToFile(tmData);
             }
         }
 
@@ -409,10 +411,10 @@ namespace TwitterBot
             int randIndex = random.Next(possibleMessages.Count);
             string message = possibleMessages[randIndex];
             message = ApplyHashtags(message, transferData);
-            if (!Program.ContainsTransferData(transferData))
+            if (!Program.transferLog.Any(i => i.playerName == transferData.playerName))
             {
                 Program.Messages.Enqueue(message);
-                Program.WriteToFile(transferData);
+                Program.transferLog.Add(transferData);
             }
         }
     }

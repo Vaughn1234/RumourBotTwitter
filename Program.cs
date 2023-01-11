@@ -61,7 +61,7 @@ namespace TwitterBot
             }
         };
 
-        static List<TmData>? tmDataSet = new List<TmData>()
+        static List<TmData> tmDataSet = new List<TmData>()
         {
             new TmData()
             {
@@ -82,6 +82,9 @@ namespace TwitterBot
                 interestedClub="Test"
             }
         };
+
+        public static List<TmData> rumourLog = new List<TmData>();
+        public static List<TransferData> transferLog = new List<TransferData>();
         public static Queue<string> Messages { get; set; } = new Queue<string>();
 
         static async Task Main(string[] args)
@@ -100,7 +103,7 @@ namespace TwitterBot
                     {
                         var tweet = await userClient.Tweets.PublishTweetAsync(Messages.Dequeue());
                         Console.WriteLine($"Tweet sent! {tweet}");
-                        //Thread.Sleep(15000);
+                        Thread.Sleep(5000);
 
                     }
                     Thread.Sleep(5000);
@@ -118,7 +121,11 @@ namespace TwitterBot
                 .header("X-RapidAPI-Key", Config.rapidKey)
                 .header("Accept", "application/json")
                 .asJson<string>();
-            tmDataSet = JsonSerializer.Deserialize<List<TmData>>(response.Body, options);
+            if(response.Body.Length > 10)
+                tmDataSet = JsonSerializer.Deserialize<List<TmData>>(response.Body, options);
+            else
+                Console.WriteLine(response.Code);
+                
         }
 
         static async void GetTransferData()
@@ -139,7 +146,7 @@ namespace TwitterBot
 
             foreach (TransferData item in firstTransfers)
             {
-                if (!ContainsTransferData(item))
+                if (!transferLog.Any(i => i.playerName == item.playerName))
                 {
                     item.transferFrom = item.transferFrom.Replace(" ", "");
                     item.transferFrom = item.transferFrom.Replace(".", "");
@@ -162,7 +169,7 @@ namespace TwitterBot
             List<TmData> newFirstThree = new List<TmData> { tmDataSet[0], tmDataSet[1], tmDataSet[2] };
             foreach (TmData item in newFirstThree)
             {
-                if (!ContainsTmData(item))
+                if (/*!ContainsTmData(item)*/!rumourLog.Any(i => i.url == item.url ) && !transferLog.Any(i => i.playerName == item.playerName))
                 {
                     item.currentClub = item.currentClub.Replace(" ", "");
                     item.currentClub = item.currentClub.Replace(".", "");
