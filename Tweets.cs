@@ -129,12 +129,12 @@ namespace TwitterBot
             int randIndex = random.Next(possibleMessages.Count);
             string message = possibleMessages[randIndex];
             message = ApplyHashtags(message, tmData);
-            if (!Program.rumourLog.Any(i => i.url == tmData.url) && !Program.transferLog.Any(i => i.playerName == tmData.playerName))
+            if (!Program.ContainsTmData(tmData)/*!Program.rumourLog.Any(i => i.url == tmData.url) && !Program.transferLog.Any(i => i.playerName == tmData.playerName)*/)
             {
                 Program.Messages.Enqueue(message);
-                Program.rumourLog.Add(tmData);
-                Console.WriteLine(Program.rumourLog);
-                //Program.WriteToFile(tmData);
+                //Program.rumourLog.Add(tmData);
+                //Console.WriteLine(Program.rumourLog);
+                Program.WriteToFile(tmData);
             }
         }
 
@@ -272,7 +272,7 @@ namespace TwitterBot
 
                 };
             }
-            else if (transferData.transferTo.ToLower().Contains("WithoutClub"))
+            else if (transferData.transferTo.ToLower().Contains("withoutclub"))
             {
                 possibleMessages = new List<string> {
                     $"{transferData.playerName} leaves his old club {transferData.transferFrom} and is now a Free Agent!",
@@ -292,7 +292,7 @@ namespace TwitterBot
                     $"{transferData.transferFrom} has decided not to retain {transferData.playerName}'s services, he is now a free agent and searching for a new club!💼🔓"
                 };
             }
-            else if (transferData.transferFrom.ToLower().Contains("WithoutClub"))
+            else if (transferData.transferFrom.ToLower().Contains("withoutclub"))
             {
                 possibleMessages = new List<string>() {
                     $"Big news! {transferData.playerName} has signed with {transferData.transferTo} after being a free agent! 🤝💼",
@@ -411,10 +411,11 @@ namespace TwitterBot
             int randIndex = random.Next(possibleMessages.Count);
             string message = possibleMessages[randIndex];
             message = ApplyHashtags(message, transferData);
-            if (!Program.transferLog.Any(i => i.playerName == transferData.playerName))
+            if (!Program.ContainsTransferData(transferData)/*!Program.transferLog.Any(i => i.playerName == transferData.playerName)*/)
             {
                 Program.Messages.Enqueue(message);
-                Program.transferLog.Add(transferData);
+                //Program.transferLog.Add(transferData);
+                Program.WriteToFile(transferData);
             }
         }
     }

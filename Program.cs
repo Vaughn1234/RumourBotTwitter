@@ -83,8 +83,8 @@ namespace TwitterBot
             }
         };
 
-        public static List<TmData> rumourLog = new List<TmData>();
-        public static List<TransferData> transferLog = new List<TransferData>();
+        //public static List<TmData> rumourLog = new List<TmData>();
+        //public static List<TransferData> transferLog = new List<TransferData>();
         public static Queue<string> Messages { get; set; } = new Queue<string>();
 
         static async Task Main(string[] args)
@@ -146,7 +146,7 @@ namespace TwitterBot
 
             foreach (TransferData item in firstTransfers)
             {
-                if (!transferLog.Any(i => i.playerName == item.playerName))
+                if (!ContainsTransferData(item)/*!transferLog.Any(i => i.playerName == item.playerName)*/)
                 {
                     item.transferFrom = item.transferFrom.Replace(" ", "");
                     item.transferFrom = item.transferFrom.Replace(".", "");
@@ -169,7 +169,7 @@ namespace TwitterBot
             List<TmData> newFirstThree = new List<TmData> { tmDataSet[0], tmDataSet[1], tmDataSet[2] };
             foreach (TmData item in newFirstThree)
             {
-                if (/*!ContainsTmData(item)*/!rumourLog.Any(i => i.url == item.url ) && !transferLog.Any(i => i.playerName == item.playerName))
+                if (!ContainsTmData(item)/*!rumourLog.Any(i => i.url == item.url ) && !transferLog.Any(i => i.playerName == item.playerName)*/)
                 {
                     item.currentClub = item.currentClub.Replace(" ", "");
                     item.currentClub = item.currentClub.Replace(".", "");
